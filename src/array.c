@@ -20,11 +20,12 @@
 /** Begin: Creating an array **/
 /* Creates a new array containing the specified number of empty slots. */
 struct Array* array_init2(Int element_size, Int count) {
-    var array = malloc(sizeof(struct Array));
+    var array = (struct Array*)malloc(sizeof(struct Array));
     array -> data = malloc(count * element_size);
     array -> element_size = element_size;
     array -> capacity = count;
     array -> count = count;
+    array -> is_empty = count == 0 ? true : false;
 
     return array;
 }
@@ -36,10 +37,11 @@ struct Array* array_init(Int element_size) {
 
 /* Creates a new array containing the specified number of a single, repeated
  * value. */
-struct Array* array_init3(Int element_size, void* repeatedValue, Int count) {
+struct Array* array_init3(Int element_size, void* repeated_value, Int count) {
     var array = array_init2(element_size, count);
     for (var i = 0; i < count; i += 1) {
-        memcpy(array -> data + element_size * i, repeatedValue, element_size);
+        memcpy(array -> data + element_size * i, repeated_value, element_size);
     }
+    return array;
 }
 /** End: Creating an array **/
