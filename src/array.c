@@ -1,3 +1,10 @@
+//
+//  array.c
+//  array
+//
+//  Created by Fang Ling on 2023/1/16.
+//
+
 #include "array.h"
 
 /* Implemented in GCC 4.9, __auto_type is similar to C++11 auto but works in C.
