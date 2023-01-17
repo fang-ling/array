@@ -6,6 +6,7 @@
 //
 
 #include "array.h"
+#include <stdlib.h>
 
 /* Implemented in GCC 4.9, __auto_type is similar to C++11 auto but works in C.
  * So GCC 4.9+ or Clang (newer than 2016's version) is required to compile this
@@ -64,7 +65,7 @@ void array_set(struct Array* array, Int index, void* element) {
 
 /* Returns the first element of the collection. */
 void* array_first(struct Array* array) {
-    if (array -> count < 1) {
+    if (array -> count < 1) { /* the collection is empty */
         return NULL;
     } else {
         return array_get(array, 0);
@@ -73,10 +74,22 @@ void* array_first(struct Array* array) {
 
 /* Returns the last element of the collection. */
 void* array_last(struct Array* array) {
-    if (array -> count < 1) {
+    if (array -> count < 1) { /* the collection is empty */
         return NULL;
     } else {
         return array_get(array, array -> count - 1);
+    }
+}
+
+/* Returns a random element of the collection. */
+void* array_random_element(struct Array* array) {
+    if (array -> count < 1) { /* the collection is empty */
+        return NULL;
+    } else {
+        /* arc4random only works with 32-bits, it shouldn't have problems here.
+         * Since it may unrealistic to put 2**64 items in a single array. ;-)
+         */
+        return array_get(array, arc4random_uniform(array -> count));
     }
 }
 /** End: Accessing Elements **/

@@ -11,6 +11,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+/* Require arc4random() by array_random_element() */
+/* TO-DO: Add Windows OS support */
+#ifdef linux
+#include <bsd/stdlib.h>
+#endif
+
 #include "types.h"
 
 struct Array {
