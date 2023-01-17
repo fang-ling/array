@@ -81,7 +81,6 @@ struct Array* array_init2(Int element_size, Int count);
  *     ```
  */
 struct Array* array_init3(Int element_size, void* repeated_value, Int count);
-
 /** End: Creating an array **/
 
 #endif /* array_h */
