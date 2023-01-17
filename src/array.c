@@ -6,7 +6,6 @@
 //
 
 #include "array.h"
-#include <string.h>
 
 /* Implemented in GCC 4.9, __auto_type is similar to C++11 auto but works in C.
  * So GCC 4.9+ or Clang (newer than 2016's version) is required to compile this
@@ -63,4 +62,21 @@ void array_set(struct Array* array, Int index, void* element) {
            array -> element_size);
 }
 
+/* Returns the first element of the collection. */
+void* array_first(struct Array* array) {
+    if (array -> count < 1) {
+        return NULL;
+    } else {
+        return array_get(array, 0);
+    }
+}
+
+/* Returns the last element of the collection. */
+void* array_last(struct Array* array) {
+    if (array -> count < 1) {
+        return NULL;
+    } else {
+        return array_get(array, array -> count - 1);
+    }
+}
 /** End: Accessing Elements **/
