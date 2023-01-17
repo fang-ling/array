@@ -6,6 +6,7 @@
 //
 
 #include "array.h"
+#include <string.h>
 
 /* Implemented in GCC 4.9, __auto_type is similar to C++11 auto but works in C.
  * So GCC 4.9+ or Clang (newer than 2016's version) is required to compile this
@@ -45,3 +46,21 @@ struct Array* array_init3(Int element_size, void* repeated_value, Int count) {
     return array;
 }
 /** End: Creating an array **/
+
+/** Begin: Accessing Elements **/
+/* Notice that there is no operator override in C. Accessing elements is
+ * something like Java ArrayList's get() & set().
+ */
+/* Reads the element at the specified position. */
+void* array_get(struct Array* array, Int index) {
+    return array -> data + array -> element_size * index;
+}
+
+/* Write to the element at the specified position. */
+void array_set(struct Array* array, Int index, void* element) {
+    memcpy(array -> data + array -> element_size * index,
+           element,
+           array -> element_size);
+}
+
+/** End: Accessing Elements **/
