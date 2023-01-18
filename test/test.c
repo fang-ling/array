@@ -57,6 +57,45 @@ Bool test_init3() {
 }
 /** End: Creating an array **/
 
+/** Begin: Accessing Elements **/
+Bool test_get() {
+    var value = 12333ll;
+    var array = array_init3(sizeof(Int), &value, 19358);
+    return *(Int*)array_get(array, 12333) == value;
+}
+
+Bool test_set() {
+    var value = 12333ll;
+    var array = array_init3(sizeof(Int), &value, 19358);
+    value = 19348ll;
+    array_set(array, 12333, &value);
+    return *(Int*)array_get(array, 12333) == value;
+}
+
+Bool test_first() {
+    var array = array_init(sizeof(Int));
+    var value = 12333ll;
+    var array2 = array_init3(sizeof(Int), &value, 19358);
+    return
+        array_first(array) == NULL &&
+        *(Int*)array_first(array2) == value;
+}
+
+Bool test_last() {
+    var array =	array_init(sizeof(Int));
+    var value = 12333ll;
+    var array2 = array_init3(sizeof(Int), &value, 19358);
+    return
+        array_last(array) == NULL &&
+        *(Int*)array_last(array2) == value;
+}
+
+Bool test_random_element() {
+    // TO-DO;
+    return true;
+}
+/** End: Accessing Elements **/
+
 Int32 main(void) {
     char time_buf[26];
     var timer = time(NULL);
@@ -79,6 +118,36 @@ Int32 main(void) {
     printf("Test Case '-[Array Test test_init3()]' started.\n");
     result = test_init3();
     printf("Test Case '-[Array Test test_init3()]' ");
+    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
+    printf(".\n");
+
+    printf("Test Case '-[Array Test test_get()]' started.\n");
+    result = test_get();
+    printf("Test Case '-[Array Test test_get()]' ");
+    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
+    printf(".\n");
+
+    printf("Test Case '-[Array Test test_set()]' started.\n");
+    result = test_set();
+    printf("Test Case '-[Array Test test_set()]' ");
+    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
+    printf(".\n");
+
+    printf("Test Case '-[Array Test test_first()]' started.\n");
+    result = test_first();
+    printf("Test Case '-[Array Test test_first()]' ");
+    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
+    printf(".\n");
+
+    printf("Test Case '-[Array Test test_last()]' started.\n");
+    result = test_last();
+    printf("Test Case '-[Array Test test_last()]' ");
+    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
+    printf(".\n");
+
+    printf("Test Case '-[Array Test test_random_element()]' started.\n");
+    result = test_random_element();
+    printf("Test Case '-[Array Test test_random_element()]' ");
     printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
     printf(".\n");
 
