@@ -36,6 +36,8 @@ struct Array {
 /* Creates a new, empty array.
  * - Parameters:
  *     element_size: The size of the array element.
+ * - Return Value:
+ *     A pointer to the generated array.
  * - Complexity:
  *     O(1) if malloc(0) takes constant time.
  * - Discussion:
@@ -53,6 +55,8 @@ struct Array* array_init(Int element_size);
  *     element_size: The size of the array element.
  *     count: The number of empty slots. count must be zero or greater.
  *            TO-DO: add negative value check.
+ * - Return Value:
+ *     A pointer to the generated array.
  * - Complexity:
  *     O(1) if malloc(n) takes constant time. or
  *     O(n) if malloc(n) takes O(n) time. Where n = count.
@@ -76,6 +80,8 @@ struct Array* array_init2(Int element_size, Int count);
  *     count: The number of times to repeat the value passed in the
  *            repeated_value parameter. count must be zero or greater.
  *            TO-DO: add negative value check.
+ * - Return Value:
+ *     A pointer to the generated array.
  * - Complexity:
  *     O(n) since we need to copy n items. Where n = count.
  * - Discussion:
@@ -89,4 +95,78 @@ struct Array* array_init2(Int element_size, Int count);
 struct Array* array_init3(Int element_size, void* repeated_value, Int count);
 /** End: Creating an array **/
 
+/** Begin: Accessing Elements **/
+/* Reads the element at the specified position.
+ * - Parameters:
+ *     array: The array to access.
+ *     index: The position of the element to access. index must be greater than
+ *            or equal to 0 and less than array -> count.
+ *            TO-DO: add boundary check.
+ * - Return Value:
+ *     A pointer to the requested element. If the collection is empty, the
+ *     function returns nil.
+ * - Complexity:
+ *     O(1)
+ * - Discussion:
+ *     See discussion of array_set(array:index:).
+ */
+void* array_get(struct Array* array, Int index);
+
+/* Write to the element at the specified position.
+ * - Parameters:
+ *     array: The array to access.
+ *     index: The position of the element to access. index must be greater than
+ *            or equal to 0 and less than array -> count.
+ *            TO-DO: add boundary check.
+ * - Complexity:
+ *     O(1)
+ * - Discussion:
+ *     The following example uses array_get(array:index) and
+ *     array_get(array:index:) to update an array’sthird element. After
+ *     assigning the new value (12333) at a specific position, that value is
+ *     immediately available at that same position.
+ *     ```c
+ *     var repeated_value = 19358;
+ *     var array = array_init3(sizeof(Int), &repeated_value, 5);
+ *     repeated_value = 12333;
+ *     array_set(array, 2, &repeated_value);
+ *     printf("%lld\n", *(Int*)array_get(array, 2));
+ *     // Prints "12333"
+ *     ```
+ */
+void array_set(struct Array* array, Int index, void* element);
+
+/* Returns the first element of the collection.
+ * - Parameters:
+ *     array: The array to access.
+ * - Complexity:
+ *     O(1)
+ * - Return Value:
+ *     The first element of the collection. If the collection is empty, the
+ *     return value of this function is NULL.
+ */
+void* array_first(struct Array* array);
+
+/* Returns the last element of the collection.
+ * - Parameters:
+ *     array: The array to access.
+ * - Complexity:
+ *     O(1)
+ * - Return Value:
+ *     The last element of the collection. If the collection is empty, the
+ *     return value of this function is NULL.
+ */
+void* array_last(struct Array* array);
+
+/* Returns a random element of the collection.
+ *  - Parameters:
+ *     array: The array to access.
+ * - Complexity:
+ *     O(1)
+ * - Return Value:
+ *     A random element from the collection. If the collection is empty, the
+ *     function returns NULL.
+ */
+void* array_random_element(struct Array* array);
+/** End: Accessing Elements **/
 #endif /* array_h */
