@@ -93,3 +93,21 @@ void* array_random_element(struct Array* array) {
     }
 }
 /** End: Accessing Elements **/
+
+/** Begin: sbrk **/
+/* Internal use function that double or halve the current data size.
+ * Note that the caller does not need to scale the parameter `new_size `by
+ * `element_size`.
+ */
+static void array_sbrk(struct Array* array, Int new_size) {
+    array -> capacity = new_size;
+    new_size *= array -> element_size;
+    if ((array -> data = realloc(array -> data, new_size)) == NULL) {
+        fprintf(stderr, "array_sbrk(array:new_size): realloc error\n");
+    }
+}
+/** End: sbrk **/
+
+/** Begin: Adding Elements **/
+
+/** End: Adding Elements **/

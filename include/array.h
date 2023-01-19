@@ -10,6 +10,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 /* Require arc4random() by array_random_element() */
 /* TO-DO: Add Windows OS support */
