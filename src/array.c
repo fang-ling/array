@@ -6,7 +6,9 @@
 //
 
 #include "array.h"
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* Implemented in GCC 4.9, __auto_type is similar to C++11 auto but works in C.
  * So GCC 4.9+ or Clang (newer than 2016's version) is required to compile this
@@ -109,5 +111,53 @@ static void array_sbrk(struct Array* array, Int new_size) {
 /** End: sbrk **/
 
 /** Begin: Adding Elements **/
+/* Adds a new element at the end of the array. */
+void array_append(struct Array* array, void* new_element) {
+    /* Special case when array is empty. Because 0 * 2 = 0. */
+    if (array -> is_empty) {
+        array_sbrk(array, 1);
+        array -> is_empty = false;
+    } else if (array -> count >= array -> capacity) {
+        array_sbrk(array, array -> capacity * 2);
+    }
+    memcpy(array -> data + array -> element_size * array -> count,
+           new_element,
+           array -> element_size);
+    array -> count += 1;
+}
 
+/* Inserts a new element at the specified position. */
+void array_insert(struct Array* array, void* new_element, Int at_i) {
+    /* Insert to an empty array at position 0 is like append(array:new_element)
+     */
+    if (array -> is_empty) {
+        if (at_i != 0) {
+            fprintf(stderr, "Fatal error: Array index is out of range\n");
+        }
+        array_append(array, new_element);
+    } else if (at_i == array -> count - 1) {
+        array_append(array, new_element);
+    } else {
+        if (array -> count >= array -> capacity) {
+            array_sbrk(array, array -> capacity * 2);
+        }
+        /* Create a buffer to hold elements behind the insert position. */
+        var num_moves = array -> count - at_i;
+        var buf = malloc(num_moves * array -> element_size);
+        /* Copy the rest to buffer */
+        memcpy(buf,
+               array -> data + array -> element_size * at_i,
+               num_moves * array -> element_size);
+        /* Insert the new element */
+        memcpy(array -> data + array -> element_size * at_i,
+               new_element,
+               array -> element_size);
+        /* Move back */
+        memcpy(array -> data + array -> element_size * (at_i + 1),
+               buf,
+               num_moves * array -> element_size);
+        /* Free buffer */
+        free(buf);
+    }
+}
 /** End: Adding Elements **/
