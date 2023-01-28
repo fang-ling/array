@@ -170,4 +170,13 @@ void* array_last(struct Array* array);
  */
 void* array_random_element(struct Array* array);
 /** End: Accessing Elements **/
+
+/** Begin: Adding Elements **/
+void array_append(struct Array* array, void* new_element);
+void array_insert(struct Array* array, void* new_element, Int at_i);
+/** End: Adding Elements **/
+
+/** Begin: Describing an Array (Experimental) **/
+void array_to_string(struct Array* array);
+/** End: Describing an Array **/
 #endif /* array_h */
