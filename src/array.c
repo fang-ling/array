@@ -135,9 +135,10 @@ void array_insert(struct Array* array, void* new_element, Int at_i) {
             fprintf(stderr, "Fatal error: Array index is out of range\n");
         }
         array_append(array, new_element);
-    } else if (at_i == array -> count - 1) {
+    } else if (at_i == array -> count) {
         array_append(array, new_element);
     } else {
+        array -> count += 1;
         if (array -> count >= array -> capacity) {
             array_sbrk(array, array -> capacity * 2);
         }
@@ -161,3 +162,14 @@ void array_insert(struct Array* array, void* new_element, Int at_i) {
     }
 }
 /** End: Adding Elements **/
+
+/** Begin: Describing an Array **/
+//TO-DO: using String instead of print, currently only works with integer type
+void array_to_string(struct Array* array) {
+    printf("[%lld", *(Int*)array_get(array, 0));
+    for (var i = 1; i < array -> count; i += 1) {
+        printf(", %lld", *(Int*)array_get(array, i));
+    }
+    printf("]\n");
+}
+/** End: Describing an Array **/
