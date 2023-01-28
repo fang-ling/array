@@ -96,6 +96,45 @@ Bool test_random_element() {
 }
 /** End: Accessing Elements **/
 
+/** Begin: Adding Elements **/
+Bool test_append() {
+    Int buf[] = {1, 2, 3, 4, 5};
+    var delta = 100ll;
+    var array = array_init(sizeof(Int));
+    for (var i = 0; i < 5; i += 1) {
+        array_append(array, &buf[i]);
+    }
+    array_append(array, &delta);
+
+    for (var i = 0; i < 5; i += 1) {
+        if (*(Int*)array_get(array, i) != buf[i]) {
+            return false;
+        }
+    }
+    return *(Int*)array_get(array, 5) == delta;
+}
+
+Bool test_insert() {
+    Int buf[] = {19358, 19358, 19358, 100, 19358, 19358, 200};
+    var value = 19358ll;
+    var array = array_init3(sizeof(Int), &value, 5);
+    value = 100;
+    array_insert(array, &value, 3);
+    value = 200;
+    array_insert(array, &value, array -> count);
+    for (var i = 0; i < 7; i += 1) {
+        if (*(Int*)array_get(array, i) != buf[i]) {
+            return false;
+        }
+    }
+
+    var array2 = array_init(sizeof(Int));
+    array_insert(array2, &value, 0);
+
+    return *(Int*)array_get(array2, 0) == 200;
+}
+/** End: Adding Elements **/
+
 Int32 main(void) {
     char time_buf[26];
     var timer = time(NULL);
@@ -148,6 +187,18 @@ Int32 main(void) {
     printf("Test Case '-[Array Test test_random_element()]' started.\n");
     result = test_random_element();
     printf("Test Case '-[Array Test test_random_element()]' ");
+    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
+    printf(".\n");
+
+    printf("Test Case '-[Array Test test_append()]' started.\n");
+    result = test_append();
+    printf("Test Case '-[Array Test test_append()]' ");
+    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
+    printf(".\n");
+
+    printf("Test Case '-[Array Test test_insert()]' started.\n");
+    result = test_insert();
+    printf("Test Case '-[Array Test test_insert()]' ");
     printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
     printf(".\n");
 
