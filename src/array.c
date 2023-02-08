@@ -163,6 +163,20 @@ void array_insert(struct Array* array, void* new_element, Int at_i) {
 }
 /** End: Adding Elements **/
 
+/** Begin: Combining Arrays **/
+/* Adds the elements of an array to the end of this array */
+void array_append2(struct Array* lhs, struct Array* rhs) {
+    if (lhs -> element_size != rhs -> element_size) {
+        return;
+    }
+    /* Maybe copy the whole range will faster than call append n times */
+    //TO-DO
+    for (var i = 0; i < rhs -> count; i += 1) {
+        array_append(lhs, array_get(rhs, i));
+    }
+}
+/** End: Combining Arrays **/
+
 /** Begin: Describing an Array **/
 //TO-DO: using String instead of print, currently only works with integer type
 void array_to_string(struct Array* array) {

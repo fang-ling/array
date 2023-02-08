@@ -135,6 +135,26 @@ Bool test_insert() {
 }
 /** End: Adding Elements **/
 
+/** Begin: Combining Arrays **/
+Bool test_append2() {
+    var delta = 12333ll;
+    var lhs = array_init3(sizeof(Int), &delta, 3);
+    Int buf[] = {12333, 12333, 12333, 19358, 19358,
+                 19358, 100, 19358, 19358, 200};
+    var rhs = array_init(sizeof(Int));
+    for (var i = 3; i < 10; i += 1) {
+        array_append(rhs, &buf[i]);
+    }
+    array_append2(lhs, rhs);
+    for (var i = 0; i < 10; i += 1) {
+        if (*(Int*)array_get(lhs, i) != buf[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+/** End: Combining Arrays **/
+
 Int32 main(void) {
     char time_buf[26];
     var timer = time(NULL);
@@ -199,6 +219,12 @@ Int32 main(void) {
     printf("Test Case '-[Array Test test_insert()]' started.\n");
     result = test_insert();
     printf("Test Case '-[Array Test test_insert()]' ");
+    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
+    printf(".\n");
+
+    printf("Test Case '-[Array Test test_append2()]' started.\n");
+    result = test_append2();
+    printf("Test Case '-[Array Test test_append2()]' ");
     printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
     printf(".\n");
 
