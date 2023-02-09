@@ -7,10 +7,6 @@
 
 #include "array.h"
 #include "util.h"
-#include <i386/types.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 /* Implemented in GCC 4.9, __auto_type is similar to C++11 auto but works in C.
  * So GCC 4.9+ or Clang (newer than 2016's version) is required to compile this
@@ -21,6 +17,30 @@
 /* Notice that it's caller's responsibility to distinguish between different
  * element type arrays.
  */
+
+/** Begin: Private helpers **/
+/* Check that the specified `index` is valid, i.e. `0 ≤ index ≤ count`. */
+static void check_index(struct Array* array, Int index) {
+    if (index > array -> count) {
+        fatal_error("Array index is out of range");
+    }
+    if (index < 0) {
+        fatal_error("Negative Array index is out of range");
+    }
+}
+
+/* Internal use function that double or halve the current data size.
+ * Note that the caller does not need to scale the parameter `new_size `by
+ * `element_size`.
+ */
+static void array_sbrk(struct Array* array, Int new_size) {
+    array -> capacity = new_size;
+    new_size *= array -> element_size;
+    if ((array -> data = realloc(array -> data, new_size)) == NULL) {
+        fatal_error("array_sbrk(array:new_size): realloc error");
+    }
+}
+/** End: Private helpers **/
 
 /** Begin: Creating an array **/
 /* Creates a new array containing the specified number of empty slots. */
@@ -98,52 +118,35 @@ void* array_random_element(struct Array* array) {
 }
 /** End: Accessing Elements **/
 
-/** Begin: sbrk **/
-/* Internal use function that double or halve the current data size.
- * Note that the caller does not need to scale the parameter `new_size `by
- * `element_size`.
- */
-static void array_sbrk(struct Array* array, Int new_size) {
-    array -> capacity = new_size;
-    new_size *= array -> element_size;
-    if ((array -> data = realloc(array -> data, new_size)) == NULL) {
-        fprintf(stderr, "array_sbrk(array:new_size): realloc error\n");
-    }
-}
-/** End: sbrk **/
-
 /** Begin: Adding Elements **/
 /* Adds a new element at the end of the array. */
 void array_append(struct Array* array, void* new_element) {
-    /* Special case when array is empty. Because 0 * 2 = 0. */
-    if (array -> is_empty) {
-        array_sbrk(array, 1);
-        array -> is_empty = false;
-    } else if (array -> count >= array -> capacity) {
-        array_sbrk(array, array -> capacity * 2);
-    }
-    memcpy(array -> data + array -> element_size * array -> count,
-           new_element,
-           array -> element_size);
-    array -> count += 1;
+    array_insert(array, new_element, array -> count);
 }
 
 /* Inserts a new element at the specified position. */
+/* Implementation notes:
+ *   - A valid insertion has a valid index, i.e. `0 ≤ at_i ≤ count`
+ *     - If at_i == count, this function is equivalent to append()
+ *   - Non-valid insertion will result a fatal error: "Array index is out of
+ *     range"
+ *   - A successful insertion always increases count by 1.
+ *     To reach amortized O(1) append(), we need to double the capacity when
+ *     count == capacity.
+ */
 void array_insert(struct Array* array, void* new_element, Int at_i) {
-    /* Insert to an empty array at position 0 is like append(array:new_element)
-     */
-    if (array -> is_empty) {
-        if (at_i != 0) {
-            fprintf(stderr, "Fatal error: Array index is out of range\n");
-        }
-        array_append(array, new_element);
-    } else if (at_i == array -> count) {
-        array_append(array, new_element);
+    check_index(array, at_i);
+    array -> is_empty = false;
+    if (array -> count >= array -> capacity) {
+        array_sbrk(array, array -> capacity == 0 ? 1 : array -> capacity * 2);
+    }
+    if (at_i == array -> count) { /* append() */
+        memcpy(array -> data + array -> element_size * array -> count,
+               new_element,
+               array -> element_size);
+        array -> count += 1;
     } else {
         array -> count += 1;
-        if (array -> count >= array -> capacity) {
-            array_sbrk(array, array -> capacity * 2);
-        }
         /* Create a buffer to hold elements behind the insert position. */
         var num_moves = array -> count - at_i;
         var buf = malloc(num_moves * array -> element_size);
