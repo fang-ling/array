@@ -19,6 +19,7 @@
 #endif
 
 #include "types.h"
+#include "util.h"
 
 struct Array {
     void* data;
@@ -183,5 +184,9 @@ void array_append2(struct Array* lhs, struct Array* rhs);
 /** Begin: Describing an Array (Experimental) **/
 void array_to_string(struct Array* array);
 /** End: Describing an Array **/
+
+/** Begin: Removing Elements **/
+void* removeLast(struct Array* array);
+/** End: Removing Elements **/
 
 #endif /* array_h */

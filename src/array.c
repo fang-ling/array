@@ -6,6 +6,8 @@
 //
 
 #include "array.h"
+#include "util.h"
+#include <i386/types.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -176,6 +178,28 @@ void array_append2(struct Array* lhs, struct Array* rhs) {
     }
 }
 /** End: Combining Arrays **/
+
+/** Begin: Removing Elements **/
+/* Removes and returns the last element of the array.
+ * It's caller's responsibility to free the return value.
+ */
+void* array_remove_last(struct Array* array) {
+    if (array -> is_empty) {
+        fatal_error("Can't remove last element from an empty array.");
+    }
+    var ret = malloc(array -> element_size);
+    memcpy(ret, array_last(array), array -> element_size);
+    array -> count -= 1;
+    if (array -> count == 0) {
+        array -> is_empty = true;
+        array -> capacity = 0;
+        array_sbrk(array, 0);
+    } else if (array -> count <= array -> capacity / 4) {
+        array_sbrk(array, array -> capacity / 2);
+    }
+    return ret;
+}
+/** End: Removing Elements **/
 
 /** Begin: Describing an Array **/
 //TO-DO: using String instead of print, currently only works with integer type
