@@ -7,6 +7,7 @@
 
 #include "array.h"
 #include "util.h"
+#include <string.h>
 
 /* Implemented in GCC 4.9, __auto_type is similar to C++11 auto but works in C.
  * So GCC 4.9+ or Clang (newer than 2016's version) is required to compile this
@@ -183,24 +184,51 @@ void array_append2(struct Array* lhs, struct Array* rhs) {
 /** End: Combining Arrays **/
 
 /** Begin: Removing Elements **/
+/* Removes and returns the element at the specified position. */
+/* Implementation Notes:
+ *   - It's caller's responsibility to free the return value.
+ *   - A valid remove has a valid index, i.e. `0 ≤ at_i ≤ count`
+ *     - If at_i == count, this function is equivalent to remove_last()
+ *   - A successful remove always decreases count by 1.
+ *     To reach amortized O(1) append(), we need to halve the capacity when
+ *     array is 25% full, i.e. `count * 4 <= capacity`.
+ */
+void* array_remove(struct Array* array, Int at_i) {
+    if (at_i == array -> count) { /* make index non-valid */
+        at_i += 1;
+    }
+    check_index(array, at_i);
+    var ret = malloc(array -> element_size);
+    memcpy(ret, array_get(array, at_i), array -> element_size);
+    array -> count -= 1;
+    if (at_i != array -> count) { // Already decrement
+        /* Create a buffer to hold elements behind the remove position. */
+        var num_moves = array -> count - at_i;
+        var buf = malloc(num_moves * array -> element_size);
+        /* Copy the rest to buffer */
+        memcpy(buf,
+               array -> data + array -> element_size * (at_i + 1),
+               num_moves * array -> element_size);
+        /* Move back */
+        memcpy(array -> data + array -> element_size * at_i,
+               buf,
+               num_moves * array -> element_size);
+        /* Free buffer */
+        free(buf);
+    }
+    if (array -> count * 4 <= array -> capacity) {
+        array_sbrk(array, array -> capacity / 2);
+    }
+    if (array -> count == 0) {
+        array -> is_empty = true;
+    }
+    return ret;
+}
 /* Removes and returns the last element of the array.
  * It's caller's responsibility to free the return value.
  */
 void* array_remove_last(struct Array* array) {
-    if (array -> is_empty) {
-        fatal_error("Can't remove last element from an empty array.");
-    }
-    var ret = malloc(array -> element_size);
-    memcpy(ret, array_last(array), array -> element_size);
-    array -> count -= 1;
-    if (array -> count == 0) {
-        array -> is_empty = true;
-        array -> capacity = 0;
-        array_sbrk(array, 0);
-    } else if (array -> count <= array -> capacity / 4) {
-        array_sbrk(array, array -> capacity / 2);
-    }
-    return ret;
+    return array_remove(array, array -> count - 1);
 }
 /** End: Removing Elements **/
 
