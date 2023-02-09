@@ -131,7 +131,20 @@ Bool test_insert() {
     var array2 = array_init(sizeof(Int));
     array_insert(array2, &value, 0);
 
-    return *(Int*)array_get(array2, 0) == 200;
+    if (*(Int*)array_get(array2, 0) != 200) {
+        return false;
+    }
+
+    var array3 = array_init(sizeof(Int));
+    for (int i = 0; i < 7; i += 1) {
+        array_insert(array3, &buf[i], 0);
+    }
+    for (int i = 6; i >= 0; i -= 1) {
+        if (*(Int*)array_get(array3, 6 - i) != buf[i]) {
+            return false;
+        }
+    }
+    return true;
 }
 /** End: Adding Elements **/
 
