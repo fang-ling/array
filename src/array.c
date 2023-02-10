@@ -230,6 +230,13 @@ void* array_remove(struct Array* array, Int at_i) {
 void* array_remove_last(struct Array* array) {
     return array_remove(array, array -> count - 1);
 }
+
+/* Removes and returns the first element of the array.
+ * It's caller's responsibility to free the return value.
+ */
+void* array_remove_first(struct Array* array) {
+    return array_remove(array, 0);
+}
 /** End: Removing Elements **/
 
 /** Begin: Describing an Array **/

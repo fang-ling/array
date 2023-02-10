@@ -186,7 +186,9 @@ void array_to_string(struct Array* array);
 /** End: Describing an Array **/
 
 /** Begin: Removing Elements **/
-void* removeLast(struct Array* array);
+void* array_remove(struct Array* array, Int index);
+void* array_remove_last(struct Array* array);
+void* array_remove_first(struct Array* array);
 /** End: Removing Elements **/
 
 #endif /* array_h */
