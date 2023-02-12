@@ -266,12 +266,12 @@ void array_removen(struct Array* array, Int at_i) {
     //return ret;
 }
 
-/* Removes and returns the last element of the array. */
+/* Removes the last element of the array. */
 void array_remove_lastn(struct Array* array) {
     array_removen(array, array -> count - 1);
 }
 
-/* Removes and returns the first element of the array. */
+/* Removes the first element of the array. */
 void array_remove_firstn(struct Array* array) {
     array_removen(array, 0);
 }
@@ -282,6 +282,9 @@ void array_remove_firstn(struct Array* array) {
 void array_swap_at(struct Array* array, Int i, Int j) {
     check_index(array, i == array -> count ? i + 1 : i);
     check_index(array, j == array -> count ? j + 1 : j);
+    if (i == j) { /* No effect */
+        return;
+    }
     var buf = malloc(array -> element_size);
     memcpy(buf, array_get(array, i), array -> element_size);
     array_set(array, i, array_get(array, j));

@@ -188,31 +188,94 @@ void array_append(struct Array* array, void* new_element);
  *     new_element: The element to append to the array.
  *     at_i: The position at which to insert the new element.
  * - Complexity:
- *     O(n). If at_i == count, this method is equivalent to append().
+ *     O(n). If at_i == count, this function is equivalent to append().
  */
 void array_insert(struct Array* array, void* new_element, Int at_i);
 /** End: Adding Elements **/
 
 /** Begin: Combining Arrays **/
+/* Adds the elements of an array to the end of this array
+ * - Parameters:
+ *     lhs: An array.
+ *     rhs: Another array.
+ * - Complexity:
+ *     O(m), where m is the length of rhs.
+ */
 void array_append2(struct Array* lhs, struct Array* rhs);
 /** End: Combining Arrays **/
 
-/** Begin: Describing an Array (Experimental) **/
-void array_to_string(struct Array* array);
-/** End: Describing an Array **/
-
 /** Begin: Removing Elements **/
+/* Removes and returns the element at the specified position.
+ * - Parameters:
+ *     array: The array to access.
+ *     index: The position of the element to remove.
+ * - Complexity:
+ *     O(n), if index == count - 1, this function is equivalent to
+ *     remove_last().
+ * - Return Value:
+ *     The removed element, it's caller's responsibility to free this value.
+ */
 void* array_remove(struct Array* array, Int index);
+/* Removes and returns the last element of the array.
+ * - Parameters:
+ *     array: The array to access.
+ * - Complexity:
+ *     O(1)
+ * - Return Value:
+ *     The last element of the array, it's caller's responsibility to free
+ *     this value.
+ */
 void* array_remove_last(struct Array* array);
+/* Removes and returns the first element of the array.
+ * - Parameters:
+ *     array: The array to access.
+ * - Complexity:
+ *     O(n)
+ * - Return Value:
+ *     The first element of the array, it's caller's responsibility to free
+ *     this value.
+ */
 void* array_remove_first(struct Array* array);
 
+/* Removes the element at the specified position.
+ * - Parameters:
+ *     array: The array to access.
+ *     index: The position of the element to remove.
+ * - Complexity:
+ *     O(n), if index == count - 1, this function is equivalent to
+ *     remove_lastn().
+ */
 void array_removen(struct Array* array, Int index);
+/* Removes the last element of the array.
+ * - Parameters:
+ *     array: The array to access.
+ * - Complexity:
+ *     O(1)
+ */
 void array_remove_lastn(struct Array* array);
+/* Removes the first element of the array.
+ * - Parameters:
+ *     array: The array to access.
+ * - Complexity:
+ *     O(n)
+ */
 void array_remove_firstn(struct Array* array);
 /** End: Removing Elements **/
 
 /** Begin: Reordering an Array’s Elements **/
+/* Exchanges the values at the specified indices of the array
+ * - Parameters:
+ *     array: The array to access.
+ *     i: The index of the first value to swap.
+ *     j: The index of the second value to swap.
+ * - Complexity:
+ *     O(1)
+ */
 void array_swap_at(struct Array* array, Int i, Int j);
 /** End: Reordering an Array’s Elements **/
+
+/** Begin: Describing an Array (Experimental) **/
+void array_to_string(struct Array* array);
+/** End: Describing an Array **/
 
 #endif /* array_h */
