@@ -271,6 +271,31 @@ Bool test_remove_last() {
 }
 /** End: Removing Elements **/
 
+/** Begin: Reordering an Array’s Elements**/
+Bool test_swap_at() {
+    Int buf[] = {12333, 19358, 19348, 12321, 12361, 19333};
+    var array = array_init(sizeof(Int));
+    for (var i = 0; i < 6; i += 1) {
+        array_append(array, &buf[i]);
+    }
+    Int buf2[] = {12333, 19358, 12321, 19348, 12361, 19333};
+    array_swap_at(array, 2, 3);
+    for (var i = 0; i < 6; i += 1) {
+        if (*(Int*)array_get(array, i) != buf2[i]) {
+            return false;
+        }
+    }
+    Int buf3[] = {19333, 19358, 12321, 19348, 12361, 12333};
+    array_swap_at(array, 0, 5);
+    for (var i = 0; i < 6; i += 1) {
+        if (*(Int*)array_get(array, i) != buf3[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+/** End: Reordering an Array’s Elements **/
+
 Int32 main(void) {
     char time_buf[26];
     var timer = time(NULL);
@@ -359,6 +384,12 @@ Int32 main(void) {
     printf("Test Case '-[Array Test test_remove_last()]' started.\n");
     result = test_remove_last();
     printf("Test Case '-[Array Test test_remove_last()]' ");
+    printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
+    printf(".\n");
+
+    printf("Test Case '-[Array Test test_swap_at()]' started.\n");
+    result = test_swap_at();
+    printf("Test Case '-[Array Test test_swap_at()]' ");
     printf(result ? T_GRN "passed" T_RST : T_RED "failed" T_RST);
     printf(".\n");
 

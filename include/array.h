@@ -195,4 +195,8 @@ void array_remove_lastn(struct Array* array);
 void array_remove_firstn(struct Array* array);
 /** End: Removing Elements **/
 
+/** Begin: Reordering an Array’s Elements **/
+void array_swap_at(struct Array* array, Int i, Int j);
+/** End: Reordering an Array’s Elements **/
+
 #endif /* array_h */

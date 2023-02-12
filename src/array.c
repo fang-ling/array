@@ -7,7 +7,6 @@
 
 #include "array.h"
 #include "util.h"
-#include <string.h>
 
 /* Implemented in GCC 4.9, __auto_type is similar to C++11 auto but works in C.
  * So GCC 4.9+ or Clang (newer than 2016's version) is required to compile this
@@ -277,6 +276,18 @@ void array_remove_firstn(struct Array* array) {
     array_removen(array, 0);
 }
 /** End: Removing Elements **/
+
+/** Begin: Reordering an Array’s Element **/
+/* Exchanges the values at the specified indices of the */
+void array_swap_at(struct Array* array, Int i, Int j) {
+    check_index(array, i == array -> count ? i + 1 : i);
+    check_index(array, j == array -> count ? j + 1 : j);
+    var buf = malloc(array -> element_size);
+    memcpy(buf, array_get(array, i), array -> element_size);
+    array_set(array, i, array_get(array, j));
+    array_set(array, j, buf);
+}
+/** End: Reordering an Array’s Elemens **/
 
 /** Begin: Describing an Array **/
 //TO-DO: using String instead of print, currently only works with integer type
