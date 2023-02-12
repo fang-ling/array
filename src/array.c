@@ -194,10 +194,8 @@ void array_append2(struct Array* lhs, struct Array* rhs) {
  *     array is 25% full, i.e. `count * 4 <= capacity`.
  */
 void* array_remove(struct Array* array, Int at_i) {
-    if (at_i == array -> count) { /* make index non-valid */
-        at_i += 1;
-    }
-    check_index(array, at_i);
+    /* make index non-valid, if i == count */
+    check_index(array, at_i == array -> count ? at_i + 1 : at_i);
     var ret = malloc(array -> element_size);
     memcpy(ret, array_get(array, at_i), array -> element_size);
     array -> count -= 1;
@@ -236,6 +234,47 @@ void* array_remove_last(struct Array* array) {
  */
 void* array_remove_first(struct Array* array) {
     return array_remove(array, 0);
+}
+
+/* Removes the element at the specified position. */
+void array_removen(struct Array* array, Int at_i) {
+    /* make index non-valid, if i == count */
+    check_index(array, at_i == array -> count ? at_i + 1 : at_i);
+    //var ret = malloc(array -> element_size);
+    //memcpy(ret, array_get(array, at_i), array -> element_size);
+    array -> count -= 1;
+    if (at_i != array -> count) { // Already decrement
+        /* Create a buffer to hold elements behind the remove position. */
+        var num_moves = array -> count - at_i;
+        var buf = malloc(num_moves * array -> element_size);
+        /* Copy the rest to buffer */
+        memcpy(buf,
+               array -> data + array -> element_size * (at_i + 1),
+               num_moves * array -> element_size);
+        /* Move back */
+        memcpy(array -> data + array -> element_size * at_i,
+               buf,
+               num_moves * array -> element_size);
+        /* Free buffer */
+        free(buf);
+    }
+    if (array -> count * 4 <= array -> capacity) {
+        array_sbrk(array, array -> capacity / 2);
+    }
+    if (array -> count == 0) {
+        array -> is_empty = true;
+    }
+    //return ret;
+}
+
+/* Removes and returns the last element of the array. */
+void array_remove_lastn(struct Array* array) {
+    array_removen(array, array -> count - 1);
+}
+
+/* Removes and returns the first element of the array. */
+void array_remove_firstn(struct Array* array) {
+    array_removen(array, 0);
 }
 /** End: Removing Elements **/
 
