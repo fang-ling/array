@@ -189,6 +189,10 @@ void array_to_string(struct Array* array);
 void* array_remove(struct Array* array, Int index);
 void* array_remove_last(struct Array* array);
 void* array_remove_first(struct Array* array);
+
+void array_removen(struct Array* array, Int index);
+void array_remove_lastn(struct Array* array);
+void array_remove_firstn(struct Array* array);
 /** End: Removing Elements **/
 
 #endif /* array_h */
