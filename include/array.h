@@ -161,7 +161,7 @@ void* array_first(struct Array* array);
 void* array_last(struct Array* array);
 
 /* Returns a random element of the collection.
- *  - Parameters:
+ * - Parameters:
  *     array: The array to access.
  * - Complexity:
  *     O(1)
@@ -173,7 +173,23 @@ void* array_random_element(struct Array* array);
 /** End: Accessing Elements **/
 
 /** Begin: Adding Elements **/
+/* Adds a new element at the end of the array.
+ * - Parameters:
+ *     array: The array to access.
+ *     new_element: The element to append to the array.
+ * - Complexity:
+ *     O(1) (amortized)
+ */
 void array_append(struct Array* array, void* new_element);
+
+/* Inserts a new element at the specified position.
+ * - Parameters:
+ *     array: The array to access.
+ *     new_element: The element to append to the array.
+ *     at_i: The position at which to insert the new element.
+ * - Complexity:
+ *     O(n). If at_i == count, this method is equivalent to append().
+ */
 void array_insert(struct Array* array, void* new_element, Int at_i);
 /** End: Adding Elements **/
 
