@@ -274,6 +274,11 @@ void array_remove_firstn(struct Array* array);
 void array_swap_at(struct Array* array, Int i, Int j);
 /** End: Reordering an Array’s Elements **/
 
+/** Begin: Destroying an array **/
+/* Destroys all the elements and deallocates all the storage capacity */
+void array_deinit(struct Array* array);
+/** End: Destroying an array **/
+
 /** Begin: Describing an Array (Experimental) **/
 void array_to_string(struct Array* array);
 /** End: Describing an Array **/

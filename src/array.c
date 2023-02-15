@@ -7,6 +7,7 @@
 
 #include "array.h"
 #include "util.h"
+#include <stdlib.h>
 
 /* Implemented in GCC 4.9, __auto_type is similar to C++11 auto but works in C.
  * So GCC 4.9+ or Clang (newer than 2016's version) is required to compile this
@@ -291,6 +292,14 @@ void array_swap_at(struct Array* array, Int i, Int j) {
     array_set(array, j, buf);
 }
 /** End: Reordering an Array’s Elemens **/
+
+/** Begin: Destroying an array **/
+/* Destroys all the elements and deallocates all the storage capacity */
+void array_deinit(struct Array* array) {
+    free(array -> data);
+    free(array);
+}
+/** End: Destroying an array **/
 
 /** Begin: Describing an Array **/
 //TO-DO: using String instead of print, currently only works with integer type
